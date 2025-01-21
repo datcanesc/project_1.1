@@ -1,0 +1,27 @@
+.filter-page {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px;
+}
+
+
+.filter-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-page-item1-container,
+.filter-page-item2-container,
+.filter-page-item3-container,
+.filter-page-item4-container   {
+    display: flex;
+    align-items: center;
+}
+
+.filter-page-item2-table{
+    width: 90%;
+    margin: 0 auto;
+}

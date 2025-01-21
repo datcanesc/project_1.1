@@ -1,0 +1,50 @@
+.App {
+  display: flex;
+  text-align: center;
+}
+
+body {
+  background-color: #091629;
+}
+
+h1 {
+  color: #ffffff;
+}
+
+h3 {
+  color: #ffffff;
+  margin-right: 10px;
+  background-color:#102749;
+}
+
+
+.ant-btn,
+.ant-card,
+.ant-modal,
+.ant-dropdown,
+.ant-popover,
+.ant-tooltip {
+  box-shadow: none;
+}
+
+.ant-select-item-option-selected {
+  background-color: #091629 !important; /* Seçilen öğenin arka plan rengi */
+}
+
+.ant-select {
+  min-width: 170px;
+}
+
+
+.ant-input {
+  width: 200px;
+}
+
+.ant-select,
+.ant-input,
+.ant-btn,
+.ant-picker {
+  margin-right: 10px;
+  height: 35px;
+}
+
