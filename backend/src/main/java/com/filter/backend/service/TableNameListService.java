@@ -14,13 +14,6 @@ public class TableNameListService {
     @Autowired
     private TableNameListRepository tableNameListRepository;
 
-    // Tablo adını kaydetme metodu
-    // public TableNameList saveTableName(String tableName) {
-    //     TableNameList tableNameList = new TableNameList();
-    //     tableNameList.setTableName(tableName);
-    //     return tableNameListRepository.save(tableNameList);
-    // }
-
     public void saveTableName(String tableName) {
         tableNameListRepository.save(tableName);
     }
