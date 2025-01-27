@@ -29,9 +29,13 @@ public class TableNameListController {
     }
 
     @PostMapping("/saveTableName")
-    public ResponseEntity<TableNameList> saveTableName(@RequestParam String tableName) {
-        TableNameList savedTable = tableNameListService.saveTableName(tableName);
-        return ResponseEntity.ok(savedTable);
+    public ResponseEntity<String> saveTableName(@RequestParam String tableName) {
+        try {
+            tableNameListService.saveTableName(tableName);
+            return ResponseEntity.ok("Tablo adı başarıyla kaydedildi: " + tableName);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Tablo adı kaydedilirken hata oluştu: " + e.getMessage());
+        }
     }
 
     @DeleteMapping

@@ -15,10 +15,14 @@ public class TableNameListService {
     private TableNameListRepository tableNameListRepository;
 
     // Tablo adını kaydetme metodu
-    public TableNameList saveTableName(String tableName) {
-        TableNameList tableNameList = new TableNameList();
-        tableNameList.setTableName(tableName);
-        return tableNameListRepository.save(tableNameList);
+    // public TableNameList saveTableName(String tableName) {
+    //     TableNameList tableNameList = new TableNameList();
+    //     tableNameList.setTableName(tableName);
+    //     return tableNameListRepository.save(tableNameList);
+    // }
+
+    public void saveTableName(String tableName) {
+        tableNameListRepository.save(tableName);
     }
 
     // ID'ye göre sıralı tablo adlarını getirme

@@ -3,6 +3,20 @@
 ## Proje Hakkında
 Bu proje, aşağıda açıklanan tablo yapıları ve özellikler baz alınarak geliştirilmiştir. Proje, arayüz üzerinden gönderilen verilerin işlenmesi ve belirli SQL sorgularının çalıştırılması ile çalışmaktadır.
 
+### Gereksinimler
+JDK version 21 kullanılmaktadır.
+- **java versiyonunu kontrol etmek için** 
+```properties
+java -version
+```
+
+- SNAPSHOT olmadan backendle ilgili işlemler yapılamaz. Sonrasında backend kodlarında bir değişiklik yapılırsa yeniden bu kod çalıştırılıp SNAPSHOT dosyası güncellenmelidir
+- **SNAPSHOT oluşturmak için** 
+```properties
+mvn clean install
+```
+Bu adımdan sonra /backend/target/backend-0.0.1-SNAPSHOT.jar yolunda bir dosya oluşturulacaktır
+
 ### Kullanılan Tablolar
 
 #### **MAIN_TABLE**
@@ -55,13 +69,23 @@ sql1=CREATE TABLE temp_table_20241230 AS SELECT * FROM SYS.MAIN_TABLE WHERE ITEM
 ## .env dosyası
 Veritabanına bağlanmak için gerekli ayarlarda bu dosya içerisinden yapılmalıdır.
 
-Eğer docker containerlarının ismi veya portu değiştirilirse frontend/src dosyası içerisinden proxy alanında ki url yeniden düzenlenmelidir.
+Eğer backend containerının servis ismi veya portu değiştirilirse frontend/package.json dosyası içerisinden proxy alanında ki url yeniden düzenlenmelidir. 
+ **"proxy": "http://BackendContainerServiceName:BackendContainerPort/",**
 
 # Projenin Çalıştırılması
 
-
+## Database (/db)
+Projeyi daha önceden elinizde bulunan bir Oracle db'ye bağlamak isterseniz env dosyasından değişiklikleri yapmalısınız.
+Ancak elinizde bir Oracle db bulunmamaktaysa dosya içerisindeki db klasörü içerisinde gidip aşağıdaki kodu çalıştırmanız gerekir.
+Bu kod Oracle db latest versiyonunu docker içerisinde kuracaktır.
 ```properties
 docker compose up --build
 ```
 
-yukarıdaki docker compose komut satırı ile backend frontend ve oracle db containerları çalıştırılacaktır.
+## Frontend ve Backend
+Projenin ana dizininde bulunurken bu kodu çalıştırınız.
+```properties
+docker compose up --build
+```
+
+yukarıdaki docker compose komut satırı ile backend frontend containerları çalıştırılacaktır.
