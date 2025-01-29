@@ -12,8 +12,6 @@ function FilterPage() {
 
     const { tableList, fetchTableNames } = useTableList();
 
-    console.log(tableList);
-
     const navigate = useNavigate();
 
     const [selectedItem, setSelectedItem] = useState([]);
@@ -93,14 +91,12 @@ function FilterPage() {
 
             fileReader.onload = (e) => {
                 const content = e.target.result;
-                console.log("Dosya içeriği:", content); // Dosya içeriğini konsola yazdır
 
                 const ids = content
                     .split(/\r?\n/) // Satırlara göre ayır
                     .filter((line) => line.trim() !== "") // Boş satırları temizle
                     .map((id) => {
                         const parsedId = parseInt(id.trim(), 10); // ID'yi integer'a çevir
-                        console.log(`Okunan ID: ${id}, Parse edilmiş ID: ${parsedId}`); // Her ID'yi kontrol et
                         return parsedId;
                     })
                     .filter((id) => !isNaN(id)); // Geçerli olmayan numaraları temizle
@@ -111,7 +107,6 @@ function FilterPage() {
                 }
 
                 setSelectedIds(ids);
-                console.log("Yüklenen ID'ler:", ids); // ID listesini kontrol et
                 message.success("Dosya başarıyla yüklendi!");
             };
 

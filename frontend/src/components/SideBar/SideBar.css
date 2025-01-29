@@ -5,7 +5,7 @@
 .side-bar-app-name,
 .side-bar-app-icon{
     background-color: #1A345A;
-    padding: 10px 0px;
+    padding: 13px 0px;
     border-radius: 8px;
 }
 
@@ -31,4 +31,12 @@
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.anticon.anticon-left {
+    color: #9fd2ff;
+}
+
+.anticon.anticon-right {
+    color: #9fd2ff;
 }
