@@ -142,7 +142,13 @@ function FilterPage({onTableCreated}) {
             const tableContentsResponse = await apiService.getTableContents(lastTableName);
             setTableData(tableContentsResponse.data);
 
-            await apiService.saveTableName(lastTableName);
+
+            const tableNameListData = {
+                firstTableName: tempTableNameInput,
+                tableName: lastTableName,
+            };
+
+            await apiService.saveTableName(tableNameListData);
             navigate(`/${lastTableName}`);
 
             onTableCreated()

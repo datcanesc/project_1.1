@@ -100,11 +100,14 @@ export const dropTable = (tableName) => {
 };
 
 // 2) Yeni bir tablo ismini kaydetmek için
-export const saveTableName = (tableName) => {
+export const saveTableName = (data) => {
     // /table-names/saveTableName endpointine POST isteği
     // RequestParam olarak tableName göndermek için:
     return apiClient.post("/table-names/saveTableName", null, {
-        params: { tableName },
+        params: {
+            firstTableName: data.firstTableName,
+            tableName:data.tableName,
+        },
     });
 };
 

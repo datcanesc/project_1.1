@@ -25,9 +25,9 @@ public class TableNameListRepository {
     }
 
     // Tabloya yeni bir kayıt ekleme
-    public void save(String tableName) {
-        String sql = "INSERT INTO TABLE_NAME_LIST (TABLE_NAME) VALUES (?)";
-        jdbcTemplate.update(sql, tableName);
+    public void save(String firstTableName,String tableName) {
+        String sql = "INSERT INTO TABLE_NAME_LIST (FIRST_TABLE_NAME,TABLE_NAME) VALUES (?,?)";
+        jdbcTemplate.update(sql, firstTableName,tableName);
     }
 
     // ID'ye göre bir kaydı sil
@@ -42,6 +42,7 @@ public class TableNameListRepository {
         public TableNameList mapRow(ResultSet rs, int rowNum) throws SQLException {
             TableNameList tableNameList = new TableNameList();
             tableNameList.setId(rs.getLong("id"));
+            tableNameList.setFirstTableName(rs.getString("FIRST_TABLE_NAME"));
             tableNameList.setTableName(rs.getString("TABLE_NAME"));
             return tableNameList;
         }

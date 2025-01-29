@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class TableNameList {
 
     private Long id;
-    private String tableName;  // Change from item_id to itemId
+    private String firstTableName;
+    private String tableName;
 }

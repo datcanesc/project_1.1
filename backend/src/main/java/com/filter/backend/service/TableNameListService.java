@@ -14,8 +14,8 @@ public class TableNameListService {
     @Autowired
     private TableNameListRepository tableNameListRepository;
 
-    public void saveTableName(String tableName) {
-        tableNameListRepository.save(tableName);
+    public void saveTableName(String firstTableName,String tableName) {
+        tableNameListRepository.save(firstTableName,tableName);
     }
 
     // ID'ye göre sıralı tablo adlarını getirme
