@@ -64,7 +64,7 @@ const SideBar = ({refreshTables}) => {
                 </div>
                 <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
                     <Menu.Item
-                        key="1"
+                        key="2"
                         onClick={() => handleNavigate("/")} // FilterPage için yönlendirme
                     >
                         Filtreleme Sayfası

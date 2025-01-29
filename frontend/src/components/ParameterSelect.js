@@ -26,21 +26,6 @@ function ParameterSelect({
     };
 
 
-    // Parameter1 fetch
-    // const fetchParameter1 = async () => {
-    //     try {
-    //         // const [loading, setLoading] = useState(false);
-    //         // setLoading(true);
-    //         const response = await axios.get("/parameters/parameters1");
-    //         setParameter1Options(formatOptions(response.data));
-    //         // setLoading(false);
-    //     } catch (error) {
-    //         console.error("Parameter1 verileri alınırken hata oluştu:", error);
-    //         // setLoading(false);
-    //         // Hata yönetimi için alert, notification veya benzeri kullanılabilir.
-    //     }
-    // };
-
     // Parameter2 fetch
     const fetchParameter2 = async (parameter1Value) => {
         try {

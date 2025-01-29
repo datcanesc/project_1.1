@@ -12,7 +12,6 @@ services:
       - ORACLE_PASSWORD=system   
       - ORACLE_USERNAME=system   
       - TZ=Etc/UTC   
-      # - ORACLE_PDB=XEPDB1
     volumes:
       - oracle-data:/u01/app/oracle
       - oracle-logs:/u01/app/oracle/diag
