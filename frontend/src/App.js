@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState} from "react";
+import React from "react";
 
 import FilterPage from './components/FilterPage';
 import SideBar from './components/SideBar/SideBar.js';
@@ -8,13 +8,10 @@ import { ConfigProvider } from "antd";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import colorPalette from './colorPalette.js';
 
+import { TableListProvider } from "./components/TableNameList/TableListContext.js";
+
 function App() {
 
-  const [refreshTables, setRefreshTables] = useState(false);
-
-  const triggerFetchTables = () => {
-      setRefreshTables((prev) => !prev); // State değişikliği ile fetch tetiklenecek
-  };
 
 
   return (
@@ -34,14 +31,14 @@ function App() {
           Button: {
             colorText: colorPalette.lightBlue,
             colorBgContainer: colorPalette.darkBlue,
-            textHoverBg:colorPalette.hoverBlue,
+            textHoverBg: colorPalette.hoverBlue,
             lineWidth: 1,
-        },
+          },
           Tooltip: {
             colorBgSpotlight: colorPalette.hoverBlue, // Yeni Tooltip arka plan rengi
           },
           DatePicker: {
-            cellActiveWithRangeBg:colorPalette.hoverBlue,
+            cellActiveWithRangeBg: colorPalette.hoverBlue,
           }
         },
         token: {
@@ -54,15 +51,17 @@ function App() {
           "colorTextBase": "#ffffff",
         }
       }}>
-      <Router>
-        <div className="App">
-        <SideBar refreshTables={refreshTables} />
-          <Routes>
-            <Route path="/"   element={<FilterPage onTableCreated={triggerFetchTables} />} />
-            <Route path="/:tableName" element={<TablePage />} />
-          </Routes>
-        </div>
-      </Router>
+      <TableListProvider>
+        <Router>
+          <div className="App">
+            <SideBar  />
+            <Routes>
+              <Route path="/" element={<FilterPage  />} />
+              <Route path="/:tableName" element={<TablePage />} />
+            </Routes>
+          </div>
+        </Router>
+      </TableListProvider>
 
     </ConfigProvider>
   );

@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Select, Button, Input, message, Upload } from "antd";
 import ParameterSelect from "./ParameterSelect";
@@ -7,9 +7,15 @@ import apiService from "./apiService";
 import ReusableTable from "./ReusableTable";
 import { UploadOutlined, FilterFilled } from "@ant-design/icons";
 import "./FilterPage.css"
-function FilterPage({onTableCreated}) {
+import { useTableList } from "./TableNameList/TableListContext";
+function FilterPage() {
+
+    const { tableList, fetchTableNames } = useTableList();
+
+    console.log(tableList);
+
     const navigate = useNavigate();
-    
+
     const [selectedItem, setSelectedItem] = useState([]);
     const [selectedOzellikler, setSelectedOzellikler] = useState([]);
 
@@ -20,7 +26,6 @@ function FilterPage({onTableCreated}) {
     const [endDate, setEndDate] = useState(null);
 
     const [tableData, setTableData] = useState([]);
-
 
 
     // ITEM2 için yıl seçimi
@@ -45,6 +50,12 @@ function FilterPage({onTableCreated}) {
     // DÜZELTİLMİŞ: Lazy initialization (fonksiyon referansı yerine çağrısı)
     const [tempTableNameInput, setTempTableNameInput] = useState(() => getTodayInYYYYMMDD());
 
+    const isTableNameTaken = (tableName) => {
+        return tableList.some((table) =>
+            (table.tableName && table.firstTableName) &&
+            (table.tableName === tableName || table.firstTableName === tableName)
+        );
+    };
     // ---- Handlers ----
     const handleTableNameChange = (e) => {
         setTempTableNameInput(e.target.value);
@@ -79,11 +90,11 @@ function FilterPage({onTableCreated}) {
     const handleFileUpload = async (file) => {
         try {
             const fileReader = new FileReader();
-    
+
             fileReader.onload = (e) => {
                 const content = e.target.result;
                 console.log("Dosya içeriği:", content); // Dosya içeriğini konsola yazdır
-    
+
                 const ids = content
                     .split(/\r?\n/) // Satırlara göre ayır
                     .filter((line) => line.trim() !== "") // Boş satırları temizle
@@ -93,30 +104,30 @@ function FilterPage({onTableCreated}) {
                         return parsedId;
                     })
                     .filter((id) => !isNaN(id)); // Geçerli olmayan numaraları temizle
-    
+
                 if (ids.length === 0) {
                     message.error("Dosya boş veya geçersiz ID formatı içeriyor!");
                     return;
                 }
-    
+
                 setSelectedIds(ids);
                 console.log("Yüklenen ID'ler:", ids); // ID listesini kontrol et
                 message.success("Dosya başarıyla yüklendi!");
             };
-    
+
             fileReader.onerror = () => {
                 message.error("Dosya okunurken bir hata oluştu.");
             };
-    
+
             fileReader.readAsText(file);
         } catch (error) {
             console.error("Dosya yükleme hatası:", error);
             message.error("Bir hata oluştu.");
         }
-    
+
         return false; // Ant Design'ın otomatik yükleme işlemini durdurmak için
     };
-    
+
 
 
     const applyOzellikler = async (tableName, ozellikKeys) => {
@@ -149,9 +160,10 @@ function FilterPage({onTableCreated}) {
             };
 
             await apiService.saveTableName(tableNameListData);
+
             navigate(`/${lastTableName}`);
 
-            onTableCreated()
+            await fetchTableNames();
 
         } catch (error) {
             console.error("Özellik uygulama sırasında hata oluştu: ", error);
@@ -183,7 +195,7 @@ function FilterPage({onTableCreated}) {
             await applyOzellikler(finalTableName, selectedOzellikler);
         } catch (error) {
             console.error("Tablo oluşturma sırasında hata oluştu: ", error);
-            message.error("Bir hata oluştu! Tablo Adı Kullanılmış olabilir");
+            message.error("Item 1 oluşturulurken bir hata oluştu!");
         }
     };
 
@@ -214,7 +226,7 @@ function FilterPage({onTableCreated}) {
             await applyOzellikler(finalTableName, selectedOzellikler);
         } catch (error) {
             console.error("Tablo oluşturma sırasında hata oluştu: ", error);
-            message.error("Bir hata oluştu! Tablo Adı Kullanılmış olabilir");
+            message.error("Item 2 oluşturulurken bir hata oluştu!");
         }
     };
 
@@ -240,7 +252,7 @@ function FilterPage({onTableCreated}) {
             await applyOzellikler(finalTableName, selectedOzellikler);
         } catch (error) {
             console.error("Tablo oluşturma sırasında hata oluştu: ", error);
-            message.error("Bir hata oluştu! Tablo Adı Kullanılmış olabilir");
+            message.error("Item 3 oluşturulurken bir hata oluştu!");;
         }
     };
 
@@ -269,7 +281,7 @@ function FilterPage({onTableCreated}) {
             await applyOzellikler(finalTableName, selectedOzellikler);
         } catch (error) {
             console.error("Tablo oluşturma sırasında hata oluştu: ", error);
-            message.error("Bir hata oluştu! Tablo Adı Kullanılmış olabilir");
+            message.error("Item 4 oluşturulurken bir hata oluştu!");
         }
     };
 
@@ -400,23 +412,39 @@ function FilterPage({onTableCreated}) {
                 />
 
                 {selectedItem === "item1" && (
-                    <Button type="primary" onClick={handleCreateItem1}>
-                        Tablo Oluştur
+                    <Button
+                        type="primary"
+                        onClick={handleCreateItem1}
+                        disabled={isTableNameTaken(tempTableNameInput)}
+                    >
+                        {isTableNameTaken(tempTableNameInput) ? "Bu İsim Kullanılmıştır" : "Tablo Oluştur"}
                     </Button>
                 )}
                 {selectedItem === "item2" && (
-                    <Button type="primary" onClick={handleCreateItem2}>
-                        Tablo Oluştur
+                    <Button
+                        type="primary"
+                        onClick={handleCreateItem2}
+                        disabled={isTableNameTaken(tempTableNameInput)}
+                    >
+                        {isTableNameTaken(tempTableNameInput) ? "Bu İsim Kullanılmıştır" : "Tablo Oluştur"}
                     </Button>
                 )}
                 {selectedItem === "item3" && (
-                    <Button type="primary" onClick={handleCreateItem3}>
-                        Tablo Oluştur
+                    <Button
+                        type="primary"
+                        onClick={handleCreateItem3}
+                        disabled={isTableNameTaken(tempTableNameInput)}
+                    >
+                        {isTableNameTaken(tempTableNameInput) ? "Bu İsim Kullanılmıştır" : "Tablo Oluştur"}
                     </Button>
                 )}
                 {selectedItem === "item4" && (
-                    <Button type="primary" onClick={handleCreateItem4}>
-                        Tablo Oluştur
+                    <Button
+                        type="primary"
+                        onClick={handleCreateItem4}
+                        disabled={isTableNameTaken(tempTableNameInput)}
+                    >
+                        {isTableNameTaken(tempTableNameInput) ? "Bu İsim Kullanılmıştır" : "Tablo Oluştur"}
                     </Button>
                 )}
             </div>
