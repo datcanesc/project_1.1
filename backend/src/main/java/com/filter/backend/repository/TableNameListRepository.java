@@ -20,19 +20,19 @@ public class TableNameListRepository {
 
     // ID'ye göre sıralı tüm kayıtları getir
     public List<TableNameList> findAllByOrderByIdDesc() {
-        String sql = "SELECT * FROM TABLE_NAME_LIST ORDER BY id DESC";
+        String sql = "SELECT * FROM oracle.my_user.TABLE_NAME_LIST";
         return jdbcTemplate.query(sql, new TableNameListRowMapper());
     }
 
     // Tabloya yeni bir kayıt ekleme
     public void save(String firstTableName,String tableName) {
-        String sql = "INSERT INTO TABLE_NAME_LIST (FIRST_TABLE_NAME,TABLE_NAME) VALUES (?,?)";
+        String sql = "INSERT INTO oracle.my_user.TABLE_NAME_LIST (FIRST_TABLE_NAME,TABLE_NAME) VALUES (?,?)";
         jdbcTemplate.update(sql, firstTableName,tableName);
     }
 
     // ID'ye göre bir kaydı sil
     public void deleteById(Long id) {
-        String sql = "DELETE FROM TABLE_NAME_LIST WHERE id = ?";
+        String sql = "DELETE FROM oracle.my_user.TABLE_NAME_LIST WHERE ID = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -41,7 +41,7 @@ public class TableNameListRepository {
         @Override
         public TableNameList mapRow(ResultSet rs, int rowNum) throws SQLException {
             TableNameList tableNameList = new TableNameList();
-            tableNameList.setId(rs.getLong("id"));
+            tableNameList.setId(rs.getLong("ID"));
             tableNameList.setFirstTableName(rs.getString("FIRST_TABLE_NAME"));
             tableNameList.setTableName(rs.getString("TABLE_NAME"));
             return tableNameList;
