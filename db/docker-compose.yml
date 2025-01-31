@@ -5,6 +5,8 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: oracle-db
+    env_file:
+      - ../.env
     ports:
       - "1521:1521"
     environment:
@@ -12,24 +14,14 @@ services:
       - ORACLE_PASSWORD=system   
       - ORACLE_USERNAME=system   
       - TZ=Etc/UTC   
+      - SPRING_DATASOURCE_USERNAME=my_user
+      - SPRING_DATASOURCE_PASSWORD=mypass
     volumes:
       - oracle-data:/u01/app/oracle
       - oracle-logs:/u01/app/oracle/diag
     restart: unless-stopped
     networks:
       - my-shared-network
-
-  dbeaver:
-    image: dbeaver/cloudbeaver
-    container_name: dbeaver
-    ports:
-      - "8978:8978" 
-    environment:
-      - CB_ADMIN_NAME=cbadmin
-      - CB_ADMIN_PASSWORD=Admin1234
-    restart: unless-stopped
-    networks:
-    - my-shared-network
 
 networks:
   my-shared-network:
