@@ -79,7 +79,7 @@ public class TableCreationService {
         String finalQuery = queryBuilder.buildQuery(sqlTemplate, placeholders);
         logger.info("Executing query for item1: {}", finalQuery);
 
-        jdbcTemplate.execute(finalQuery);
+        jdbcTemplate.update(finalQuery);
 
         createdTableNames.add(tempTableName);
 
@@ -101,7 +101,7 @@ public class TableCreationService {
         String finalQuery = queryBuilder.buildQuery(sqlTemplate, placeholders);
         logger.info("Executing query for item2: {}", finalQuery);
 
-        jdbcTemplate.execute(finalQuery);
+        jdbcTemplate.update(finalQuery);
 
         createdTableNames.add(tempTableName);
 
@@ -118,13 +118,13 @@ public class TableCreationService {
         placeholders.put("TempTableName", tempTableName);
 
         String finalQuery = queryBuilder.buildQuery(createTableQuery, placeholders);
-        jdbcTemplate.execute(finalQuery);
+        jdbcTemplate.update(finalQuery);
 
         System.out.println("Table created: " + tempTableName);
     }
 
     public void insertIdsIntoItem3Table(String tempTableName, List<Integer> ids) {
-        String insertQuery = "INSERT INTO " + tempTableName + " (id) VALUES (?)";
+        String insertQuery = queryConfig.getItem3_insert_sql() + tempTableName + " (id) VALUES (?)";
 
         for (Integer id : ids) {
             jdbcTemplate.update(insertQuery, id);
@@ -186,7 +186,7 @@ public class TableCreationService {
     logger.info("Executing query for item4: {}", finalQuery);
 
     // Query'yi çalıştır
-    jdbcTemplate.execute(finalQuery);
+    jdbcTemplate.update(finalQuery);
 
     System.out.println("Table created for item4: " + tempTableName);
 }
@@ -264,8 +264,15 @@ public class TableCreationService {
     }
 
     public List<Map<String, Object>> getTableContents(String tableName) {
-        String query = "SELECT * FROM " + tableName;
-        return jdbcTemplate.queryForList(query);
+
+        String sqlTemplate =  queryConfig.getGet_table();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("TableName", tableName);
+
+        String finalQuery = queryBuilder.buildQuery(sqlTemplate, placeholders);
+
+        return jdbcTemplate.queryForList(finalQuery);
     }
 
     // ---------------------------------------------------------

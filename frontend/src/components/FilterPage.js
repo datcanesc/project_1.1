@@ -214,6 +214,8 @@ function FilterPage() {
                 selectedIds,
             };
 
+            console.log(data);
+
             const tableResponse = await apiService.createTableForItem2(data);
             console.log("Item 2 tablosu oluşturuldu: ", tableResponse.data);
 
@@ -447,7 +449,7 @@ function FilterPage() {
                 {selectedItem === "item2" && (
                     <ReusableTable
                         dataSource={tableData} // Gelen veriler
-                        rowKey="ID" // Benzersiz anahtar ID
+                        rowKey="id" // Benzersiz anahtar ID
                         onSelectChange={handleSelectChange} // Checkbox değişikliklerini yönet
                     />
                 )}
