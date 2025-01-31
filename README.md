@@ -4,20 +4,6 @@
 Bu proje, kullanıcıların arayüz üzerinden belirledikleri kriterlere göre verileri filtreleyip, filtrelenmiş verileri Excel formatında dışa aktarmalarına olanak tanır. Proje, OracleDB, Spring Boot, Trino ve React teknolojileri kullanılarak geliştirilmiştir. İş akışı şu şekilde işlemektedir: Arayüzden gelen filtreleme istekleri doğrultusunda SQL sorguları oluşturulur, bu sorgular Trino'ya iletilir ve sonuçlar OracleDB üzerinde işlenir.
 
 
-### Gereksinimler
-JDK version 21 kullanılmaktadır.
-- **java versiyonunu kontrol etmek için** 
-```properties
-java -version
-```
-
-- SNAPSHOT olmadan backendle ilgili işlemler yapılamaz. Sonrasında backend kodlarında bir değişiklik yapılırsa yeniden bu kod çalıştırılıp SNAPSHOT dosyası güncellenmelidir
-- **SNAPSHOT oluşturmak için** 
-```properties
-mvn clean install
-```
-Bu adımdan sonra /backend/target/backend-0.0.1-SNAPSHOT.jar yolunda bir dosya oluşturulacaktır
-
 ### Kullanılan Tablolar
 
 #### **MAIN_TABLE**
@@ -73,12 +59,28 @@ Eğer backend containerının servis ismi veya portu değiştirilirse frontend/p
    - connection-password = veri tabanı schema şifresi
 
 # Projenin Çalıştırılması
+
+### Gereksinimler
+JDK version 21 kullanılmaktadır.
+- **java versiyonunu kontrol etmek için** 
+```properties
+java -version
+```
+
+- SNAPSHOT olmadan backendle ilgili işlemler yapılamaz. Sonrasında backend kodlarında bir değişiklik yapılırsa yeniden bu kod çalıştırılıp SNAPSHOT dosyası güncellenmelidir. /backend klasörü içerisinde gidin.
+- **SNAPSHOT oluşturmak için** 
+```properties
+mvn clean install
+```
+Bu adımdan sonra /backend/target/backend-0.0.1-SNAPSHOT.jar yolunda bir dosya oluşturulacaktır
+
+## Docker Network Oluşturulması
 Öncelikle containerların birbiri ile iletişimde olabilmesi için bir network oluşturulmalıdır. Bu proje için aşağıda örnek bir network olluşturma kodu verilmiştir. İsteğe bağlı olarak network ismi değiştirilebilir ancak docke-compose dosyaları içerisinden de bu isim güncellenmelidir.
 
 ```properties
 docker network create my-shared-network
 ```
-## Trino (/trino)
+## Trino (/trino) port:8088
 Projeyi daha önceden elinizde bulunan bir Trino'ya bağlamak isterseniz oracle.properties dosyasından değişiklikleri yapmalısınız.
 Ancak elinizde bir Trino bulunmamaktaysa dosya içerisindeki trino klasörü içerisinde gidip aşağıdaki kodu çalıştırmanız gerekir.
 Bu kod trino'yu docker içerisinde kuracaktır.
