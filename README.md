@@ -105,3 +105,8 @@ docker compose up --build
 ```
 
 yukarıdaki docker compose komut satırı ile backend frontend containerları çalıştırılacaktır.
+
+
+### Qureis
+queries.properties dosyasının değiştirilmesi halinde sorgular doğru şekilde aktarılıyor mu kontrol etmek için 
+/queries/all endpointine GET isteği atılmalıdır.
