@@ -1,5 +1,4 @@
 services:
-
   backend:
     image: project-backend:latest
     container_name: project-backend-v1
@@ -11,11 +10,14 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+        - SPRING_TRINO_USERNAME=${SPRING_TRINO_USERNAME}
+        - SPRING_TRINO_URL=${SPRING_TRINO_URL}
+        - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+        - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+        - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+        - CATALOG=${CATALOG}
     networks:
-      - my-shared-network 
+      - my-shared-network
 
   frontend:
     image: project-frontend:latest
@@ -36,8 +38,8 @@ services:
       - NODE_ENV=development
     command: npm start
     networks:
-      - my-shared-network 
+      - my-shared-network
 
 networks:
-  my-shared-network :
+  my-shared-network:
     external: true

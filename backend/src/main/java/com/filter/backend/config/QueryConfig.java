@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import jakarta.annotation.PostConstruct;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -76,31 +74,16 @@ public class QueryConfig {
     @Value("${drop_table_sql}")
     private String drop_table_sql;
 
-    @PostConstruct
-    public void printQueries() {
-        System.out.println("################# SQL OZELLIK");
-        System.out.println("SQL_OZELLIK_1: " + sql_ozellik1);
-        System.out.println("SQL_OZELLIK_2: " + sql_ozellik2);
-        System.out.println("SQL_OZELLIK_3: " + sql_ozellik3);
-        System.out.println("SQL_OZELLIK_4: " + sql_ozellik4);
-        System.out.println("SQL_OZELLIK_5: " + sql_ozellik5);
-        System.out.println("SQL_OZELLIK_6: " + sql_ozellik6);
-        System.out.println("SQL_OZELLIK_7: " + sql_ozellik7);
-        System.out.println("");
-        System.out.println("################# SQL");
-        System.out.println("SQL1: " + sql1);
-        System.out.println("SQL2: " + sql2);
-        System.out.println("SQL3: " + sql3);
-        System.out.println("SQL4: " + sql4);
-        System.out.println("SQL5: " + sql5);
-        System.out.println("");
-        System.out.println("sql_item2_liste: " + sql_item2_liste);
-        System.out.println("item3_create_table_sql: " + item3_create_table_sql);
-        System.out.println("item3_insert_sql: " + item3_insert_sql);
-        System.out.println("parameter1:" + parameter1);
-        System.out.println("parameter2: " + parameter2);
-        System.out.println("parameter3: " + parameter3);
-        System.out.println("drop_table_sql: " + drop_table_sql);
-    }
+    @Value("${get_table}")
+    private String get_table;
+
+    @Value("${findAllByOrderByIdDesc}")
+    private String findAllByOrderByIdDesc;
+
+    @Value("${saveTableName}")
+    private String saveTableName;
+
+    @Value("${deleteTableName}")
+    private String deleteTableName;
 }
 

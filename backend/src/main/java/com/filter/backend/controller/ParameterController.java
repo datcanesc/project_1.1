@@ -6,10 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controller ornegi: item1 ve item2 icin ayri endpoint'ler,
- * ardindan ozellik sorgularini uygulamak icin ayri endpoint.
- */
 @RestController
 @RequestMapping("/parameters")
 public class ParameterController {

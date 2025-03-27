@@ -65,6 +65,18 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>io.trino</groupId>
+			<artifactId>trino-jdbc</artifactId>
+			<version>465</version>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>5.0.1</version> <!-- Güncel sürüm numarasını kontrol edin -->
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
