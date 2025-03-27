@@ -26,7 +26,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
                 dataSource={dataSource}
                 rowKey={rowKey} // Benzersiz anahtar
                 rowSelection={rowSelection}
-                pagination={{ pageSize: 20 }}
+                pagination={{ pageSize: 13 }}
             />
     );
 }
