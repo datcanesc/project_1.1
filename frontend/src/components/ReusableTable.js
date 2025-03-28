@@ -21,7 +21,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
         ...column,
         fixed: index < 2 ? 'left' : undefined, // İlk iki kolonu sola sabitle
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            <div style={{ padding: 10, borderRadius: 8, border: "1px solid #1676d1" }}>
+            <div style={{padding: 10, borderRadius: 8, backgroundColor: "#0a192f", color: "white"}}>
                 <Input
                     placeholder={`Arama yap: ${column.dataIndex}`}
                     value={selectedKeys[0]}
@@ -29,7 +29,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
                         setSelectedKeys(e.target.value ? [e.target.value] : [])
                     }
                     onPressEnter={() => handleSearch(selectedKeys, confirm, column.dataIndex)}
-                    style={{ width: 198, marginBottom: 15, marginRight: 0, display: "block", backgroundColor: "#25497E", color: "white" }}
+                    style={{ width: 198, marginBottom: 15, marginRight: 0, display: "block", backgroundColor: "rgb(34, 60, 99)", color: "white" }}
                 />
                 <Space>
                     <Button
@@ -43,7 +43,6 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
                     </Button>
                     <Button
                         color="danger"
-                        variant="outlined"
                         onClick={() => handleReset(clearFilters, column.dataIndex)}
                         size="small"
                         style={{ width: 90, marginRight: 0 }}
