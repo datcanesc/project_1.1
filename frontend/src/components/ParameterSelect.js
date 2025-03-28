@@ -27,11 +27,15 @@ function ParameterSelect({
 
 
     // Parameter2 fetch
-    const fetchParameter2 = async (parameter1Value) => {
+    const fetchParameter2 = async (parameter1Values) => {
         try {
-            const response = await axios.get(
-                `/parameters/parameters2?parameter1=${parameter1Value}`
-            );
+            const response = await axios.get(`/parameters/parameters2`, {
+                params: { parameter1: parameter1Values }, // Liste olarak gönderiyoruz
+                paramsSerializer: (params) => {
+                    return params.parameter1.map(p => `parameter1=${encodeURIComponent(p)}`).join('&');
+                }
+            });
+    
             setParameter2Options(formatOptions(response.data));
         } catch (error) {
             console.error("Parameter2 verileri alınırken hata oluştu:", error);
@@ -39,16 +43,27 @@ function ParameterSelect({
     };
 
     // Parameter3 fetch
-    const fetchParameter3 = async (parameter1Value, parameter2Value) => {
+    const fetchParameter3 = async (parameter1Values, parameter2Values) => {
         try {
-            const response = await axios.get(
-                `/parameters/parameters3?parameter1=${parameter1Value}&parameter2=${parameter2Value}`
-            );
+            const response = await axios.get(`/parameters/parameters3`, {
+                params: {
+                    parameter1: parameter1Values, // Liste olarak gönderiyoruz
+                    parameter2: parameter2Values // Liste olarak gönderiyoruz
+                },
+                paramsSerializer: (params) => {
+                    return [
+                        ...params.parameter1.map(p => `parameter1=${encodeURIComponent(p)}`),
+                        ...params.parameter2.map(p => `parameter2=${encodeURIComponent(p)}`)
+                    ].join('&');
+                }
+            });
+    
             setParameter3Options(formatOptions(response.data));
         } catch (error) {
             console.error("Parameter3 verileri alınırken hata oluştu:", error);
         }
     };
+    
 
     // Bileşen ilk yüklendiğinde parameter1 bilgilerini getir
     useEffect(() => {
@@ -112,12 +127,14 @@ function ParameterSelect({
     return (
         <div className="parameter-container">
             <Select
+                mode="multiple"
                 placeholder={parameter1Label || "Parametre 1"}
                 options={parameter1Options}
                 value={selectedParameter1}
                 onChange={handleParameter1Change}
             />
             <Select
+                mode="multiple"
                 placeholder={parameter2Label || "Parametre 2"}
                 options={parameter2Options}
                 value={selectedParameter2}
@@ -125,6 +142,7 @@ function ParameterSelect({
                 onChange={handleParameter2Change}
             />
             <Select
+                mode="multiple"
                 placeholder={parameter3Label || "Parametre 3"}
                 options={parameter3Options}
                 value={selectedParameter3}

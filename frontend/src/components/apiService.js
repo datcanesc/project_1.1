@@ -45,9 +45,9 @@ export const createTableForItem4 = (data) => {
     return apiClient.post("/table/createItem4", null, {
         params: {
             tempTableName: data.tempTableName,
-            parameter1: data.parameter1,
-            parameter2: data.parameter2,
-            parameter3: data.parameter3,
+            parameter1: data.parameter1.join(","),  // Listeyi virgülle ayır
+            parameter2: data.parameter2.join(","),
+            parameter3: data.parameter3.join(","),
             liste_item: data.liste_item,
             selectedValue: "item4",
             startDateValue: data.startDateValue,

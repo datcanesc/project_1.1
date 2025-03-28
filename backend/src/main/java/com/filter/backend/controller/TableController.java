@@ -78,9 +78,9 @@ public class TableController {
     @PostMapping("/createItem4")
     public String createTableForItem4(
             @RequestParam String tempTableName,
-            @RequestParam String parameter1,
-            @RequestParam String parameter2,
-            @RequestParam String parameter3,
+            @RequestParam List<String>  parameter1,
+            @RequestParam List<String>  parameter2,
+            @RequestParam List<String>  parameter3,
             @RequestParam String liste_item,
             @RequestParam String selectedValue,
             @RequestParam(required = false) String startDateValue,

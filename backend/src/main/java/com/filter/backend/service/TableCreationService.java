@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Verilen sorgu template'lerine gore veritabaninda tablo olusturma ve
@@ -136,61 +137,67 @@ public class TableCreationService {
     // ---------------------------------------------------------
     // 4) ITEM4 icin tablo olusturma
     // ---------------------------------------------------------
+
+    private String formatListForSQL(List<String> values) {
+        return values.stream()
+                .map(value -> "'" + value + "'") // Değerleri tek tırnak içine al
+                .collect(Collectors.joining(", "));
+    }
+
     public void createItem4Table(
-        String tempTableName,
-        String parameter1,
-        String parameter2,
-        String parameter3,
-        String liste_item,
-        String selectedValue,
-        String startDateValue,
-        String endDateValue) {
-    
-    String sqlTemplate;
-    switch (liste_item) {
-        case "list_item_1":
-        case "list_item_2":
-        case "list_item_3":
-        case "list_item_4":
-        case "list_item_5":
-        case "list_item_6":
-        case "list_item_7":
-        case "list_item_8":
-            sqlTemplate = queryConfig.getSql5(); // Listeye uygun SQL
-            break;
+            String tempTableName,
+            List<String> parameter1,
+            List<String> parameter2,
+            List<String> parameter3,
+            String liste_item,
+            String selectedValue,
+            String startDateValue,
+            String endDateValue) {
 
-        case "list_item_9":
-            sqlTemplate = queryConfig.getSql6(); // Tarih aralığı isteyen SQL
-            break;
+        String sqlTemplate;
+        switch (liste_item) {
+            case "list_item_1":
+            case "list_item_2":
+            case "list_item_3":
+            case "list_item_4":
+            case "list_item_5":
+            case "list_item_6":
+            case "list_item_7":
+            case "list_item_8":
+                sqlTemplate = queryConfig.getSql5(); // Listeye uygun SQL
+                break;
 
-        default:
-            throw new IllegalArgumentException("Unsupported liste_item for item4: " + liste_item);
+            case "list_item_9":
+                sqlTemplate = queryConfig.getSql6(); // Tarih aralığı isteyen SQL
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported liste_item for item4: " + liste_item);
+        }
+
+        // Placeholderları doldur
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("TempTableName", tempTableName);
+        placeholders.put("PARAMETER1", formatListForSQL(parameter1)); // Listeyi SQL formatına çevir
+        placeholders.put("PARAMETER2", formatListForSQL(parameter2));
+        placeholders.put("PARAMETER3", formatListForSQL(parameter3));
+        placeholders.put("selectedIds", selectedValue);
+
+        // Tarih aralığı gerekiyorsa ekle
+        if (sqlTemplate.equals(queryConfig.getSql6())) {
+            placeholders.put("tarih1", startDateValue);
+            placeholders.put("tarih2", endDateValue);
+        }
+
+        // Query'yi oluştur
+        String finalQuery = queryBuilder.buildQuery(sqlTemplate, placeholders);
+        logger.info("Executing query for item4: {}", finalQuery);
+
+        // Query'yi çalıştır
+        jdbcTemplate.update(finalQuery);
+
+        System.out.println("Table created for item4: " + tempTableName);
     }
-
-    // Placeholderları doldur
-    Map<String, String> placeholders = new HashMap<>();
-    placeholders.put("TempTableName", tempTableName);
-    placeholders.put("PARAMETER1", parameter1);
-    placeholders.put("PARAMETER2", parameter2);
-    placeholders.put("PARAMETER3", parameter3);
-    placeholders.put("selectedIds", selectedValue);
-
-    // Tarih aralığı gerekiyorsa ekle
-    if (sqlTemplate.equals(queryConfig.getSql6())) {
-        placeholders.put("tarih1", startDateValue);
-        placeholders.put("tarih2", endDateValue);
-    }
-
-    // Query'yi oluştur
-    String finalQuery = queryBuilder.buildQuery(sqlTemplate, placeholders);
-    logger.info("Executing query for item4: {}", finalQuery);
-
-    // Query'yi çalıştır
-    jdbcTemplate.update(finalQuery);
-
-    System.out.println("Table created for item4: " + tempTableName);
-}
-
 
     // ---------------------------------------------------------
     // Zincirleme OZELLIK sorgularini uygulayan metot
@@ -265,7 +272,7 @@ public class TableCreationService {
 
     public List<Map<String, Object>> getTableContents(String tableName) {
 
-        String sqlTemplate =  queryConfig.getGet_table();
+        String sqlTemplate = queryConfig.getGet_table();
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("TableName", tableName);
