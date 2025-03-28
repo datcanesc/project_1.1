@@ -10,9 +10,7 @@ services:
     ports:
       - "1521:1521"
     environment:
-      - ORACLE_ALLOW_REMOTE=true 
-      - ORACLE_PASSWORD=system   
-      - ORACLE_USERNAME=system   
+      - ORACLE_ALLOW_REMOTE=true  
       - TZ=Etc/UTC   
       - SPRING_DATASOURCE_USERNAME=my_user
       - SPRING_DATASOURCE_PASSWORD=mypass
