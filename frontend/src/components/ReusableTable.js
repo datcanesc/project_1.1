@@ -19,13 +19,8 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
     // Add search functionality to each column
     const columnsWithSearch = dynamicColumns.map((column) => ({
         ...column,
-        filterDropdown: ({
-            setSelectedKeys,
-            selectedKeys,
-            confirm,
-            clearFilters,
-        }) => (
-            <div style={{ padding: 10, borderRadius:8 ,border: "1px solid#1676d1" }}>
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 10, borderRadius: 8, border: "1px solid #1676d1" }}>
                 <Input
                     placeholder={`Arama yap: ${column.dataIndex}`}
                     value={selectedKeys[0]}
@@ -33,7 +28,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
                         setSelectedKeys(e.target.value ? [e.target.value] : [])
                     }
                     onPressEnter={() => handleSearch(selectedKeys, confirm, column.dataIndex)}
-                    style={{ width: 198, marginBottom: 15, marginRight: 0, display: "block", backgroundColor: "#25497E" }}
+                    style={{ width: 198, marginBottom: 15, marginRight: 0, display: "block", backgroundColor: "#25497E", color: "white" }}
                 />
                 <Space>
                     <Button
@@ -60,19 +55,39 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
         filterIcon: (filtered) => (
             <SearchOutlined style={{
                 fontSize: '15px',
-                padding: 5, 
-                borderRadius: 8, 
-                backgroundColor: filtered ? "#1890ff" : undefined, 
+                padding: 5,
+                borderRadius: 8,
+                backgroundColor: filtered ? "#1890ff" : undefined,
                 color: filtered ? "white" : undefined
             }} />
         ),
         onFilter: (value, record) =>
             record[column.dataIndex]
-                ? record[column.dataIndex]
-                    .toString()
-                    .toLowerCase()
-                    .includes(value.toLowerCase())
+                ? record[column.dataIndex].toString().toLowerCase().includes(value.toLowerCase())
                 : "",
+
+        // Highlighting the searched text in the table
+        render: (text) => {
+            const searchValue = filters[column.dataIndex] || "";
+            if (!searchValue || !text) return text;
+
+            const regex = new RegExp(`(${searchValue})`, "gi");
+            const parts = text.toString().split(regex);
+
+            return (
+                <span>
+                    {parts.map((part, index) =>
+                        part.toLowerCase() === searchValue.toLowerCase() ? (
+                            <mark key={index} style={{ backgroundColor: "yellow", padding: "0 2px" }}>
+                                {part}
+                            </mark>
+                        ) : (
+                            part
+                        )
+                    )}
+                </span>
+            );
+        }
     }));
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -110,7 +125,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
                 locale: {
                     prev_page: 'Önceki',
                     next_page: 'Sonraki',
-                    items_per_page: ' adet / sayfa',  // Changes "items/page" to "entries per page"
+                    items_per_page: ' adet / sayfa',
                 },
             }}
         />
