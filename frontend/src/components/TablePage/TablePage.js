@@ -11,6 +11,7 @@ const TablePage = () => {
     const { tableName } = useParams(); // URL'den tableName parametresini alır
     const [data, setData] = useState([]); // Tablo verileri
     const [loading, setLoading] = useState(false); // Yüklenme durumu
+    const [selectedRows, setSelectedRows] = useState([]); // Seçilen satırlar
 
     useEffect(() => {
         if (tableName) {
@@ -32,15 +33,16 @@ const TablePage = () => {
     };
 
     const handleExportExcel = () => {
+        const rowsToExport = selectedRows.length > 0 ? selectedRows : data; // Seçilen satırlar varsa, onları al, yoksa tüm veriyi al
         try {
-            const worksheet = XLSX.utils.json_to_sheet(data); // JSON'dan Excel sayfası oluştur
+            const worksheet = XLSX.utils.json_to_sheet(rowsToExport); // JSON'dan Excel sayfası oluştur
 
             // Kolon genişliklerini ayarlama
-            const columns = Object.keys(data[0] || {}); // İlk satırın kolon başlıklarını al
+            const columns = Object.keys(rowsToExport[0] || {}); // İlk satırın kolon başlıklarını al
             const columnWidths = columns.map((column) => {
                 const maxLength = Math.max(
                     column.length, // Başlık uzunluğu
-                    ...data.map((item) => String(item[column] || "").length) // Verilerin uzunluğu
+                    ...rowsToExport.map((item) => String(item[column] || "").length) // Verilerin uzunluğu
                 );
                 return { wch: maxLength + 2 }; // Genişlik: maxLength + padding
             });
@@ -61,6 +63,10 @@ const TablePage = () => {
         }
     };
 
+    const handleSelectChange = (selectedRowKeys, selectedRows) => {
+        setSelectedRows(selectedRows); // Seçilen satırları güncelle
+    };
+
     return (
         <div className="table-page-container">
             <h1 style={{ color: "#ffffff" }}>{tableName}</h1>
@@ -70,13 +76,14 @@ const TablePage = () => {
                 type="primary"
                 onClick={handleExportExcel}
             >
-                Excel'e Aktar
+                Seçili Satırları Excel'e Aktar
             </Button>
             <ReusableTable
                 columns={null} // Dinamik kolonlar için null
                 dataSource={data} // Tablo verileri
                 rowKey="ID" // Benzersiz anahtar
                 loading={loading} // Yüklenme durumu
+                onSelectChange={handleSelectChange} // Seçim değişikliği için callback
             />
         </div>
     );

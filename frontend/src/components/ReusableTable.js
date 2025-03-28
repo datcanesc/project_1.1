@@ -17,8 +17,9 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
             : []);
 
     // Add search functionality to each column
-    const columnsWithSearch = dynamicColumns.map((column) => ({
+    const columnsWithSearch = dynamicColumns.map((column, index) => ({
         ...column,
+        fixed: index < 2 ? 'left' : undefined, // İlk iki kolonu sola sabitle
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div style={{ padding: 10, borderRadius: 8, border: "1px solid #1676d1" }}>
                 <Input
@@ -65,15 +66,15 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
             record[column.dataIndex]
                 ? record[column.dataIndex].toString().toLowerCase().includes(value.toLowerCase())
                 : "",
-
+    
         // Highlighting the searched text in the table
         render: (text) => {
             const searchValue = filters[column.dataIndex] || "";
             if (!searchValue || !text) return text;
-
+    
             const regex = new RegExp(`(${searchValue})`, "gi");
             const parts = text.toString().split(regex);
-
+    
             return (
                 <span>
                     {parts.map((part, index) =>
@@ -119,6 +120,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
             dataSource={dataSource}
             rowKey={rowKey}
             rowSelection={rowSelection}
+            scroll={{ x: 'max-content' }}
             pagination={{
                 showSizeChanger: true,
                 pageSizeOptions: ['10', '20', '50', '100'],
@@ -128,6 +130,7 @@ function ReusableTable({ columns, dataSource, rowKey = "ID", onSelectChange }) {
                     items_per_page: ' adet / sayfa',
                 },
             }}
+
         />
     );
 }

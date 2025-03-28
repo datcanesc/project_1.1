@@ -56,7 +56,7 @@ function FilterPage() {
     };
     // ---- Handlers ----
     const handleTableNameChange = (e) => {
-        setTempTableNameInput(e.target.value);
+        setTempTableNameInput(e.target.value.substring(0, 28));
     };
 
     const handleSelectedItemChange = (value) => {

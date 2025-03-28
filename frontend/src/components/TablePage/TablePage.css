@@ -1,18 +1,28 @@
 .table-page-container {
+    margin: 0 20px 0 20px; /* Üst ve alt boşluklar */
     flex: 1;
     display: flex;
-    flex-direction: column; /* Dikey sıralama */
-    align-items: center; /* Yatayda ortalama (isteğe bağlı) */
-    justify-content: flex-start; /* İçerikleri üstten başlat */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: auto; /* Taşan içerik için kaydırma */
+    width: 100%; /* Genişlik sabit olmalı */
 }
 
 .export-excel-button{
     position: absolute;
-    top: 90px;
-    right: 13%;
+    top: 80px;
+    right: 15%;
 }
 
 .table-page-container h1 {
     margin-top: 80px;
     margin-bottom: 30px; /* Başlık ile tablo arasında boşluk */
+}
+
+
+.ant-table-body,
+.ant-table-content {
+    scrollbar-width: thin;
+    scrollbar-color: #3a5275 #1A345A; /* Ant Design token değerlerini buraya elle yazabilirsin */
 }
